@@ -1,6 +1,4 @@
-# created by virtualenv automatically
-# *
+# .gitignore
+Lib/
 node_modules/
-.env
-.idea/
-*.log
+config.json
