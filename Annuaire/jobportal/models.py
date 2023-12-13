@@ -1,4 +1,3 @@
-from django.core.validators import EmailValidator
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -10,13 +9,19 @@ class Company(models.Model):
     """
     Représente une entreprise avec ses informations de base.
     """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='companies', null=True, blank=True)
     name = models.CharField(max_length=100)
-    website = models.URLField(max_length=200)
-    city = models.CharField(max_length=50)
-    email_address = models.EmailField(max_length=100, default='')
-    physical_address = models.TextField()
-    contact_name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
+    website = models.URLField(max_length=200, blank=True)
+    city = models.CharField(max_length=50, blank=True)
+    email_address = models.EmailField(max_length=100, default='', blank=True)
+    physical_address = models.TextField(blank=True)
+    contact_name = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    number_of_ads = models.IntegerField(default=0)
+
+    def update_number_of_ads(self):
+        self.number_of_ads = self.jobad_set.count()
+        self.save()
 
     def __str__(self):
         return self.name
@@ -26,16 +31,28 @@ class JobAd(models.Model):
     """
     Représente une offre d'emploi.
     """
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=100)
-    job_description = models.TextField()
-    job_location = models.CharField(max_length=100)
-    job_type = models.CharField(max_length=50)
-    job_site = models.CharField(max_length=100)
-    date_added = models.DateTimeField(default=timezone.now)
-    job_link = models.URLField()
-    contact_date = models.DateTimeField(null=True, blank=True)
+
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    job_title = models.CharField(max_length=100)  # Ce champ reste obligatoire
+    job_description = models.TextField(blank=True)  # Non obligatoire
+    job_location = models.CharField(max_length=100, blank=True)  # Non obligatoire
+    job_type = models.CharField(max_length=50, blank=True)  # Non obligatoire
+    job_site = models.CharField(max_length=100, blank=True)  # Non obligatoire
+    date_added = models.DateTimeField(default=timezone.now, blank=True)  # Non obligatoire
+    job_link = models.URLField(blank=True)  # Non obligatoire
+    contact_date = models.DateTimeField(null=True, blank=True)  # Non obligatoire
     is_favorite = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.company:
+            self.company.update_number_of_ads()
+
+    def delete(self, *args, **kwargs):
+        company = self.company
+        super().delete(*args, **kwargs)
+        if company:
+            company.update_number_of_ads()
 
     def __str__(self):
         return self.job_title

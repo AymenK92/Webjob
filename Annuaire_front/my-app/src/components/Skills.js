@@ -37,7 +37,7 @@ export function Skills({ data, isEditing, onSave }) {
     <li key={index}>{skill}</li>
   ));
 
-  console.log("Skills:", skills); // Ajout d'un console.log pour afficher les compétences dans la console
+  console.log("Skills:", skills);
 
   return (
     <>

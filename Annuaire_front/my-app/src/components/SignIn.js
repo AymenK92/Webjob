@@ -4,8 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,6 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/authService';
+import { useAuth } from '../services/authContext';
 import Cookies from 'js-cookie';
 
 
@@ -23,7 +22,7 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
-
+  const { setIsLoggedIn } = useAuth();
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoginError(null);
@@ -34,7 +33,7 @@ export default function SignIn() {
         const loginResponse = await login(username, password);
 
         if (loginResponse) {
-            localStorage.setItem('isLoggedIn', 'true');  // Mise à jour du localStorage
+            setIsLoggedIn(true);
             navigate('/dashboard');
         } else {
             setLoginError('Login failed');
@@ -79,10 +78,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -99,7 +94,7 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Pas encore de compte? Sign Up"}
                 </Link>
               </Grid>
             </Grid>

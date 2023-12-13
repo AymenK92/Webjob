@@ -20,7 +20,7 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  backgroundColor: '#1976d2', // Navbar color
+  backgroundColor: '#1976d2',
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -31,7 +31,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-// Styles for the search field
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,

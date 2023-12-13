@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,41 +14,38 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [errorMessages, setErrorMessages] = useState({});
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const email = data.get('email');
-    const password = data.get('password');
-    const firstName = data.get('firstName');
-    const lastName = data.get('lastName');
+  event.preventDefault();
+  setErrorMessages({});
+  const data = new FormData(event.currentTarget);
+  const username = data.get('username');
+  const email = data.get('email');
+  const password = data.get('password');
+  const firstName = data.get('firstName');
+  const lastName = data.get('lastName');
 
-    const registered = await register(username, email, password, firstName, lastName);
+  const result = await register(username, email, password, firstName, lastName);
+  if (result.success) {
+    navigate('/signin');
+  } else {
+    setErrorMessages(result.error);
+  }
+};
 
-    if (registered) {
-      navigate('/signin');
-    } else {
-      // Show an error message
-    }
-  };
+{Object.keys(errorMessages).length > 0 && (
+  <Box sx={{ mt: 2, color: 'red' }}>
+    {Object.keys(errorMessages).map((key, index) => (
+      <p key={index}>{`${key}: ${errorMessages[key]}`}</p>
+    ))}
+  </Box>
+)}
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -132,14 +130,20 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
+          {Object.keys(errorMessages).length > 0 && (
+            <Box sx={{ mt: 2, color: 'red' }}>
+              {Object.keys(errorMessages).map((key, index) => (
+                <p key={index}>{`${key}: ${errorMessages[key]}`}</p>
+              ))}
+            </Box>
+          )}
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Annonce d'Emploi - {{ job_ad.job_title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .job-title {
+            color: #007bff;
+        }
+        .job-section {
+            margin-top: 10px;
+        }
+        .job-section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="job-title">{{ job_ad.job_title }}</h1>
+
+        <div class="job-section">
+            <div class="job-section-title">Entreprise:</div>
+            <p>{{ job_ad.company.name }}</p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Lieu:</div>
+            <p>{{ job_ad.job_location }}</p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Description:</div>
+            <p>{{ job_ad.job_description }}</p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Type de poste:</div>
+            <p>{{ job_ad.job_type }}</p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Site du poste:</div>
+            <p>{{ job_ad.job_site }}</p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Lien vers l'annonce:</div>
+            <p><a href="{{ job_ad.job_link }}">{{ job_ad.job_link }}</a></p>
+        </div>
+
+        <div class="job-section">
+            <div class="job-section-title">Date de contact:</div>
+            <p>{{ job_ad.contact_date|date:"d/m/Y" }}</p>
+        </div>
+
+        <div class="footer">
+            <p>Cette annonce a été générée automatiquement.</p>
+        </div>
+    </div>
+</body>
+</html>

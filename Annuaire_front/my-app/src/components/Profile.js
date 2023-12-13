@@ -84,7 +84,6 @@ export default function Profile() {
       });
 
       if (response.status === 200 || response.status === 201) {
-        // Nouvelle requête GET pour obtenir les données les plus récentes
         const updatedResponse = await axios.get("http://localhost:8000/api/profiles/", {
           headers: {
             'X-CSRFToken': csrfToken

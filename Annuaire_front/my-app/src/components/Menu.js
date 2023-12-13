@@ -28,10 +28,10 @@ const CustomDrawer = styled(Drawer)({
 const Menu = () => {
   const { isDrawerOpen, toggleDrawer } = useDrawer();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth(); // hook useAuth pour obtenir l'état d'authentification
+  const { isLoggedIn } = useAuth();
 
   const handleLogout = async () => {
-    await logout(); // Attendre que la déconnexion soit terminée
+    await logout();
     navigate('/');
   };
 
@@ -44,7 +44,7 @@ const Menu = () => {
       </div>
       <Divider />
       <List>
-        {isLoggedIn && ( // Montrez ces liens seulement si l'utilisateur est connecté
+        {isLoggedIn && (
           <>
             <ListItem button component={Link} to="/dashboard">
               <ListItemIcon>

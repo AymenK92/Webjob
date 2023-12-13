@@ -1,4 +1,23 @@
-# .gitignore
+# Environnement Virtuel Python
+env/
 Lib/
+Scripts/
+
+# Fichiers spécifiques aux éditeurs
+.idea/
+.vscode/
+
+# Node modules
 node_modules/
+
+# Fichier de configuration
 config.json
+
+# Base de données SQLite
+db.sqlite3
+
+# Autres fichiers et dossiers à ignorer
+*.pyc
+*.pyo
+*.swp
+.DS_Store
