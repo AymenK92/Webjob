@@ -1,0 +1,13 @@
+# Build stage
+FROM node:18.17.0 AS build
+WORKDIR /app
+COPY my-app/package.json my-app/package-lock.json ./
+RUN npm install
+COPY my-app ./
+RUN npm run build
+
+# Production stage
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
