@@ -30,7 +30,7 @@ const CompanyEditModal = ({ open, handleClose, company, updateCompany }) => {
 
   const handleSubmit = () => {
     const csrfToken = getCsrfTokenFromCookies();
-    axios.patch(`http://localhost:8000/api/companies/${formData.id}/`, formData, {
+    axios.patch(`https://devjobnavigator-api.onrender.com/api/companies/${formData.id}/`, formData, {
       headers: {
         'X-CSRFToken': csrfToken
       },
