@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'; // Ajoutez useEffect ici
+import React, { useState, useContext, useEffect } from 'react'; 
 import { Modal, Box, TextField, Button } from '@mui/material';
 import axios from 'axios';
 import { CompanyFormContext } from '../contexts/CompanyFormContext';
@@ -42,7 +42,7 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
   const handleSubmit = async () => {
     const csrfToken = getCsrfTokenFromCookies();
     try {
-      const response = await axios.post('http://localhost:8000/api/companies/', formData, {
+      const response = await axios.post('https://devjobnavigator-api.onrender.com/api/companies/', formData, {
         headers: { 'X-CSRFToken': csrfToken },
         withCredentials: true
       });
