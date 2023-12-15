@@ -1,9 +1,9 @@
 # Build stage
 FROM node:18.17.0 AS build
 WORKDIR /app
-COPY my-app/package.json my-app/package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
-COPY my-app ./
+COPY . ./
 RUN npm run build
 
 # Production stage
