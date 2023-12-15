@@ -37,7 +37,7 @@ const JobAdsPage = () => {
     async function fetchData() {
       try {
         const csrfToken = getCsrfTokenFromCookies();
-        const response = await axios.get('http://localhost:8000/api/jobads/', {
+        const response = await axios.get('https://devjobnavigator-api.onrender.com/api/jobads/', {
           headers: {
             'X-CSRFToken': csrfToken
           },
@@ -65,7 +65,7 @@ const JobAdsPage = () => {
   console.log("Data to be saved:", newData);
   const csrfToken = getCsrfTokenFromCookies();
   const method = isEditing ? 'put' : 'post';
-  const url = isEditing ? `http://localhost:8000/api/jobads/${activeJobAd.id}/` : 'http://localhost:8000/api/jobads/';
+  const url = isEditing ? `https://devjobnavigator-api.onrender.com/api/jobads/${activeJobAd.id}/` : 'https://devjobnavigator-api.onrender.com/api/jobads/';
 
   const payload = {
     ...newData,
@@ -98,7 +98,7 @@ const JobAdsPage = () => {
   const handleDelete = async (jobAdId) => {
     const csrfToken = getCsrfTokenFromCookies();
     try {
-      await axios.delete(`http://localhost:8000/api/jobads/${jobAdId}/`, {
+      await axios.delete(`https://devjobnavigator-api.onrender.com/api/jobads/${jobAdId}/`, {
         headers: {
           'X-CSRFToken': csrfToken
         },
@@ -113,7 +113,7 @@ const JobAdsPage = () => {
   const toggleFavorite = async (jobAdId) => {
     const csrfToken = getCsrfTokenFromCookies();
     try {
-      const response = await axios.patch(`http://localhost:8000/api/jobads/${jobAdId}/toggle-favorite/`, {}, {
+      const response = await axios.patch(`https://devjobnavigator-api.onrender.com/api/jobads/${jobAdId}/toggle-favorite/`, {}, {
         headers: {
           'X-CSRFToken': csrfToken
         },
