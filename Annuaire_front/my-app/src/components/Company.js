@@ -16,7 +16,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Menu from './Menu';
 import CompanyFormModal from './CompanyFormModal';
 import CompanyDetailModal from './CompanyDetailModal';
-import CompanyEditModal from './CompanyEditModal'; // N'oubliez pas d'importer ce fichier
+import CompanyEditModal from './CompanyEditModal'; 
 import axios from 'axios';
 
 const getCsrfTokenFromCookies = () => {
