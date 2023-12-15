@@ -29,7 +29,7 @@ export default function Profile() {
     async function fetchData() {
       try {
         const csrfToken = getCsrfTokenFromCookies();
-        const response = await axios.get("http://localhost:8000/api/profiles/", {
+        const response = await axios.get("https://devjobnavigator-api.onrender.com/api/profiles/", {
           headers: {
             'X-CSRFToken': csrfToken
           },
@@ -76,7 +76,7 @@ export default function Profile() {
         city: newData.city || ""
       };
 
-      const response = await axios.patch(`http://localhost:8000/api/profiles/${profileId}/`, formattedData, {
+      const response = await axios.patch(`https://devjobnavigator-api.onrender.com/api/profiles/${profileId}/`, formattedData, {
         headers: {
           'X-CSRFToken': csrfToken
         },
@@ -84,7 +84,7 @@ export default function Profile() {
       });
 
       if (response.status === 200 || response.status === 201) {
-        const updatedResponse = await axios.get("http://localhost:8000/api/profiles/", {
+        const updatedResponse = await axios.get("https://devjobnavigator-api.onrender.com/api/profiles/", {
           headers: {
             'X-CSRFToken': csrfToken
           },
