@@ -36,7 +36,7 @@ const Company = () => {
 
   useEffect(() => {
     const csrfToken = getCsrfTokenFromCookies();
-    axios.get('http://localhost:8000/api/companies/', {
+    axios.get('https://devjobnavigator-api.onrender.com/api/companies/', {
       headers: {
         'X-CSRFToken': csrfToken
       },
@@ -88,7 +88,7 @@ const Company = () => {
 
   const deleteCompany = (id) => {
     const csrfToken = getCsrfTokenFromCookies();
-    axios.delete(`http://localhost:8000/api/companies/${id}/`, {
+    axios.delete(`https://devjobnavigator-api.onrender.com/api/companies/${id}/`, {
       headers: {
         'X-CSRFToken': csrfToken
       },
