@@ -26,7 +26,7 @@ const CompanyCheckForm = ({ onCompanyExists, onCompanyNotFound }) => {
     setError('');
     try {
       const csrfToken = getCsrfTokenFromCookies();
-      const response = await axios.get(`http://localhost:8000/api/companies/`, {
+          const response = await axios.get(`https://devjobnavigator-api.onrender.com/api/companies/`, {
         headers: {
           'X-CSRFToken': csrfToken
         },
