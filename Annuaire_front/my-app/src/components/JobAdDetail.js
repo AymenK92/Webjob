@@ -22,7 +22,7 @@ const JobAdDetail = ({ jobAd }) => {
     console.log("Génération du PDF pour l'annonce ID:", jobAd.id);
     setIsGenerating(true);
 
-    axios.get(`http://localhost:8000/api/generate-pdf/${jobAd.id}`, { responseType: 'blob' })
+    axios.get(`https://devjobnavigator-api.onrender.com/api/generate-pdf/${jobAd.id}`, { responseType: 'blob' })
       .then(response => {
         const pdfBlob = response.data;
         console.log("Blob PDF reçu:", pdfBlob);
