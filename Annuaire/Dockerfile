@@ -3,8 +3,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-RUN python manage.py makemigrations || (echo "Makemigrations failed"; exit 1)
-RUN python manage.py migrate || (echo "Migrate failed"; exit 1)
 RUN ls -la
 EXPOSE 8000
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "Annuaire.wsgi:application"]
