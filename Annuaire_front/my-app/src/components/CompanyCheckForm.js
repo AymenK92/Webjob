@@ -21,6 +21,11 @@ const getCsrfTokenFromCookies = () => {
   return null;
 };
 
+const csrfToken = getCsrfTokenFromCookies();
+    console.log("CSRF Token in App:", csrfToken);
+  }, []);
+
+
 const CompanyCheckForm = ({ onCompanyExists, onCompanyNotFound }) => {
   const { updateCompanyData } = useContext(CompanyFormContext);
   const [formData, setFormData] = useState({ name: '', location: '' });
