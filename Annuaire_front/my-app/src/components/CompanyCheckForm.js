@@ -3,10 +3,21 @@ import { TextField, Button } from '@mui/material';
 import axios from 'axios';
 import { CompanyFormContext } from '../contexts/CompanyFormContext';
 
-const getCsrfTokenFromCookies = () => {
+/**const getCsrfTokenFromCookies = () => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; csrftoken=`);
   if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};*/
+
+const getCsrfTokenFromCookies = () => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; csrftoken=`);
+  if (parts.length === 2) {
+    const csrfToken = parts.pop().split(';').shift();
+    console.log("CSRF Token:", csrfToken); 
+    return csrfToken;
+  }
   return null;
 };
 
