@@ -37,10 +37,6 @@ const getCsrfTokenFromCookies = () => {
   return null;
 };
 
-const csrfToken = getCsrfTokenFromCookies();
-    console.log("CSRF Token in App:", csrfToken);
-  }, []);
-
 const Company = () => {
   const { isDrawerOpen, toggleDrawer } = useDrawer();
   const [open, setOpen] = useState(false);
