@@ -139,6 +139,7 @@ CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv())
+CSRF_COOKIE_SAMESITE = 'None'
 
 # Configuration des sessions
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
