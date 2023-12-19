@@ -26,9 +26,10 @@ const CompanyCheckForm = ({ onCompanyExists, onCompanyNotFound }) => {
   const [formData, setFormData] = useState({ name: '', location: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
   useEffect(() => {
     const csrfToken = getCsrfTokenFromCookies();
-    console.log("CSRF Token:", csrfToken);
+    console.log("CSRF Token in CompanyCheckForm:", csrfToken);
   }, []);
 
   const handleChange = (e) => {
