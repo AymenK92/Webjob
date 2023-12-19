@@ -21,16 +21,15 @@ const getCsrfTokenFromCookies = () => {
   return null;
 };
 
-useEffect(() => {
-    const csrfToken = getCsrfTokenFromCookies();
-    console.log("CSRF Token:", csrfToken);
-  }, []);
-
 const CompanyCheckForm = ({ onCompanyExists, onCompanyNotFound }) => {
   const { updateCompanyData } = useContext(CompanyFormContext);
   const [formData, setFormData] = useState({ name: '', location: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  useEffect(() => {
+    const csrfToken = getCsrfTokenFromCookies();
+    console.log("CSRF Token:", csrfToken);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
