@@ -31,7 +31,6 @@ export const login = async (username, password) => {
   }
 };
 
-};
 
 export const register = async (username, email, password, firstName, lastName) => {
   try {
