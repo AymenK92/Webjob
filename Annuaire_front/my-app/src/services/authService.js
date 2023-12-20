@@ -8,20 +8,22 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-/*axiosInstance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
-  console.log('CSRF Token:', csrfToken); 
-  if (['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase())) {
+  if (csrfToken) {
     config.headers['X-CSRFToken'] = csrfToken;
+  } else {
+    console.log('CSRF token not found');
   }
   return config;
-});*/
+});
 
-axiosInstance.interceptors.request.use((config) => {
+
+/*axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
   config.headers['X-CSRFToken'] = csrfToken;
   return config;
-});
+});*/
 
 
 export const login = async (username, password) => {
