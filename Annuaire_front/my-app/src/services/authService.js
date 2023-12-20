@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const API_URL = 'https://devjobnavigator-api.onrender.com/api';
 
-/*const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
@@ -12,52 +12,25 @@ axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
   if (csrfToken) {
     config.headers['X-CSRFToken'] = csrfToken;
-  } else {
-    console.log('CSRF token not found');
   }
   return config;
-});*/
-
-
-/*axiosInstance.interceptors.request.use((config) => {
-  const csrfToken = Cookies.get('csrftoken');
-  config.headers['X-CSRFToken'] = csrfToken;
-  return config;
-});*/
-
-
-axios.interceptors.request.use((request) => {
-    const csrfToken = Cookies.get('csrftoken'); 
-    request.withCredentials = true;
-
-    if (csrfToken) {
-        request.headers['X-CSRFToken'] = csrfToken;
-    }
-
-    return request;
 }, (error) => {
     return Promise.reject(error);
 });
 
 export const login = async (username, password) => {
-
   try {
-    const response = await axiosInstance.post(`/login/`, {
-      username,
-      password,
-    });
-
+    const response = await axiosInstance.post(`/login/`, { username, password });
     if (response.status === 200) {
       localStorage.setItem('isLoggedIn', 'true');
       return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    if (error.response) {
     }
     return false;
+  } catch (error) {
+    return false;
   }
+};
+
 };
 
 export const register = async (username, email, password, firstName, lastName) => {
