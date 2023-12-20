@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'; 
+import React, { useState, useContext } from 'react'; 
 import { Modal, Box, TextField, Button } from '@mui/material';
 import axios from 'axios';
 import { CompanyFormContext } from '../contexts/CompanyFormContext';
@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-
 axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
   if (csrfToken) {
@@ -19,7 +18,6 @@ axiosInstance.interceptors.request.use((config) => {
   }
   return config;
 });
-
 
 const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
   const { companyData } = useContext(CompanyFormContext);
@@ -32,15 +30,6 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
     contact_name: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    if (companyData) {
-      setFormData({
-        name: companyData.name || '',
-        city: companyData.city || '',
-      });
-    }
-  }, [companyData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,8 +67,12 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
         <h2 id="modal-modal-title">Ajouter une entreprise</h2>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <TextField name="name" margin="normal" fullWidth id="name" label="Nom de l'entreprise" variant="outlined" value={formData.name} onChange={handleChange} />
+        <TextField name="website" margin="normal" fullWidth id="website" label="Site web de l'entreprise" variant="outlined" value={formData.website} onChange={handleChange} />
         <TextField name="city" margin="normal" fullWidth id="city" label="Ville de l'entreprise" variant="outlined" value={formData.city} onChange={handleChange} />
-        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>Enregistrer</Button>
+        <TextField name="email_address" margin="normal" fullWidth id="email_address" label="Adresse e-mail de l'entreprise" variant="outlined" value={formData.email_address} onChange={handleChange} />
+        <TextField name="physical_address" margin="normal" fullWidth id="physical_address" label="Adresse physique de l'entreprise" variant="outlined" value={formData.physical_address} onChange={handleChange} />
+        <TextField name="contact_name" margin="normal" fullWidth id="contact_name" label="Nom de la personne à contacter" variant="outlined" value={formData.contact_name} onChange={handleChange} />
+        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit} style={{ marginTop: '20px' }}>Enregistrer</Button>
       </Box>
     </Modal>
   );
