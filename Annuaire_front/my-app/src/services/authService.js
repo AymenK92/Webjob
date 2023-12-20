@@ -8,29 +8,42 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use((config) => {
+/*axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
-  if (csrfToken) {
+  console.log('CSRF Token:', csrfToken); 
+  if (['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase())) {
     config.headers['X-CSRFToken'] = csrfToken;
   }
   return config;
-}, (error) => {
-    return Promise.reject(error);
+});*/
+
+axiosInstance.interceptors.request.use((config) => {
+  const csrfToken = Cookies.get('csrftoken');
+  config.headers['X-CSRFToken'] = csrfToken;
+  return config;
 });
 
+
 export const login = async (username, password) => {
+
   try {
-    const response = await axiosInstance.post(`/login/`, { username, password });
+    const response = await axiosInstance.post(`/login/`, {
+      username,
+      password,
+    });
+
     if (response.status === 200) {
       localStorage.setItem('isLoggedIn', 'true');
       return true;
+    } else {
+      return false;
     }
-    return false;
   } catch (error) {
+    if (error.response) {
+    }
     return false;
   }
 };
-
 
 export const register = async (username, email, password, firstName, lastName) => {
   try {
