@@ -40,21 +40,22 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
   };
 
   const handleSubmit = async () => {
-    const csrfToken = getCsrfTokenFromCookies();
     try {
-      const response = await axios.post('https://devjobnavigator-api.onrender.com/api/companies/', formData, {
-        headers: { 'X-CSRFToken': csrfToken },
-        withCredentials: true
-      });
-      console.log('Entreprise ajoutée:', response.data);
-      updateCompanyData({ ...response.data });
-      addNewCompany(response.data);
-      handleClose();
+        const csrfToken = getCsrfTokenFromCookies(); 
+
+        const response = await axiosInstance.post('/companies/', formData, {
+            headers: { 'X-CSRFToken': csrfToken },
+        });
+        console.log('Entreprise ajoutée:', response.data);
+        updateCompanyData({ ...response.data });
+        addNewCompany(response.data);
+        handleClose();
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'entreprise:', error);
-      setErrorMessage(error.response?.data?.message || 'Erreur lors de l\'ajout de l\'entreprise.');
+        console.error('Erreur lors de l\'ajout de l\'entreprise:', error);
+        setErrorMessage(error.response?.data?.message || 'Erreur lors de l\'ajout de l\'entreprise.');
     }
-  };
+};
+
 
 
   return (
