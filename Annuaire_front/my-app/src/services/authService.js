@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const API_URL = 'https://devjobnavigator-api.onrender.com/api';
 
-const axiosInstance = axios.create({
+/*const axiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use((config) => {
     console.log('CSRF token not found');
   }
   return config;
-});
+});*/
 
 
 /*axiosInstance.interceptors.request.use((config) => {
@@ -25,6 +25,19 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });*/
 
+
+axios.interceptors.request.use((request) => {
+    const csrfToken = Cookies.get('csrftoken'); 
+    request.withCredentials = true;
+
+    if (csrfToken) {
+        request.headers['X-CSRFToken'] = csrfToken;
+    }
+
+    return request;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 export const login = async (username, password) => {
 
