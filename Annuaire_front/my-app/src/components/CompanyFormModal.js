@@ -1,35 +1,43 @@
-import React, { useState, useContext, useEffect } from 'react'; 
+import React, { useState, useContext } from 'react'; 
 import { Modal, Box, TextField, Button } from '@mui/material';
 import axios from 'axios';
 import { CompanyFormContext } from '../contexts/CompanyFormContext';
+import Cookies from 'js-cookie';
 
-const getCsrfTokenFromCookies = () => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; csrftoken=`);
-  return parts.length === 2 ? parts.pop().split(';').shift() : null;
-};
+const API_URL = 'https://devjobnavigator-api.onrender.com/api';
+
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+});
+
+
+axiosInstance.interceptors.request.use((config) => {
+  const csrfToken = Cookies.get('csrftoken');
+  if (csrfToken) {
+    config.headers['X-CSRFToken'] = csrfToken;
+  }
+  return config;
+});
+
 
 const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
-  const { companyData, updateCompanyData } = useContext(CompanyFormContext);
-
-  const initialState = {
+  const { companyData } = useContext(CompanyFormContext);
+  const [formData, setFormData] = useState({
     name: '',
     website: '',
     city: '',
     email_address: '',
     physical_address: '',
     contact_name: ''
-  };
-
-  const [formData, setFormData] = useState(initialState);
-  const [errorMessage, setErrorMessage] = useState(null);
+  });
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (companyData) {
       setFormData({
-        ...initialState,
         name: companyData.name || '',
-        city: companyData.city || ''
+        city: companyData.city || '',
       });
     }
   }, [companyData]);
@@ -41,22 +49,23 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
 
   const handleSubmit = async () => {
     try {
-        const csrfToken = getCsrfTokenFromCookies(); 
+      const csrfToken = Cookies.get('csrftoken');
+      if (!csrfToken) {
+        throw new Error('CSRF token not found');
+      }
 
-        const response = await axiosInstance.post('/companies/', formData, {
-            headers: { 'X-CSRFToken': csrfToken },
-        });
-        console.log('Entreprise ajoutée:', response.data);
-        updateCompanyData({ ...response.data });
-        addNewCompany(response.data);
-        handleClose();
+      const response = await axiosInstance.post('/companies/', formData, {
+        headers: { 'X-CSRFToken': csrfToken },
+      });
+
+      console.log('Entreprise ajoutée:', response.data);
+      addNewCompany(response.data);
+      handleClose();
     } catch (error) {
-        console.error('Erreur lors de l\'ajout de l\'entreprise:', error);
-        setErrorMessage(error.response?.data?.message || 'Erreur lors de l\'ajout de l\'entreprise.');
+      console.error('Erreur lors de l\'ajout de l\'entreprise:', error);
+      setErrorMessage(error.response?.data?.message || 'Erreur lors de l\'ajout de l\'entreprise.');
     }
-};
-
-
+  };
 
   return (
     <Modal
@@ -69,11 +78,7 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
         <h2 id="modal-modal-title">Ajouter une entreprise</h2>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <TextField name="name" margin="normal" fullWidth id="name" label="Nom de l'entreprise" variant="outlined" value={formData.name} onChange={handleChange} />
-        <TextField name="website" margin="normal" fullWidth id="website" label="Site web de l'entreprise" variant="outlined" value={formData.website} onChange={handleChange} />
         <TextField name="city" margin="normal" fullWidth id="city" label="Ville de l'entreprise" variant="outlined" value={formData.city} onChange={handleChange} />
-        <TextField name="email_address" margin="normal" fullWidth id="email_address" label="Adresse e-mail de l'entreprise" variant="outlined" value={formData.email_address} onChange={handleChange} />
-        <TextField name="physical_address" margin="normal" fullWidth id="physical_address" label="Adresse physique de l'entreprise" variant="outlined" value={formData.physical_address} onChange={handleChange} />
-        <TextField name="contact_name" margin="normal" fullWidth id="contact_name" label="Nom de la personne à contacter" variant="outlined" value={formData.contact_name} onChange={handleChange} />
         <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>Enregistrer</Button>
       </Box>
     </Modal>
