@@ -53,12 +53,17 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
   }
 };
 
+const getCsrfTokenFromCookies = () => {
+  const cookies = document.cookie.split('; ');
+  const csrfTokenCookie = cookies.find(cookie => cookie.startsWith('csrftoken='));
+  return csrfTokenCookie ? csrfTokenCookie.split('=')[1] : null;
+};
 
-  const getCsrfTokenFromCookies = () => {
+  /*const getCsrfTokenFromCookies = () => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; csrftoken=`);
     return parts.length === 2 ? parts.pop().split(';').shift() : null;
-  };
+  };*/
 
   return (
     <Modal
