@@ -36,21 +36,23 @@ const CompanyFormModal = ({ open, handleClose, addNewCompany }) => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post(`${API_URL}/companies/`, formData, {
-        headers: {
-          'X-CSRFToken': getCsrfTokenFromCookies(),
-        },
-      });
-      console.log('Entreprise ajoutée:', response.data);
-      updateCompanyData({ ...response.data });
-      addNewCompany(response.data);
-      handleClose();
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de l'entreprise:", error);
-      setErrorMessage(error.response?.data?.message || "Erreur lors de l'ajout de l'entreprise.");
-    }
-  };
+  try {
+    console.log('Données à soumettre:', formData); 
+    const response = await axios.post(`${API_URL}/companies/`, formData, {
+      headers: {
+        'X-CSRFToken': getCsrfTokenFromCookies(),
+      },
+    });
+    console.log('Entreprise ajoutée:', response.data);
+    updateCompanyData({ ...response.data });
+    addNewCompany(response.data);
+    handleClose();
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de l'entreprise:", error);
+    setErrorMessage(error.response?.data?.message || "Erreur lors de l'ajout de l'entreprise.");
+  }
+};
+
 
   const getCsrfTokenFromCookies = () => {
     const value = `; ${document.cookie}`;
