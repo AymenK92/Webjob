@@ -8,24 +8,18 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-/*axiosInstance.interceptors.request.use((config) => {
-  const csrfToken = Cookies.get('csrftoken');
-  console.log('CSRF Token:', csrfToken); 
-  if (['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase())) {
-    config.headers['X-CSRFToken'] = csrfToken;
-  }
-  return config;
-});*/
-
+// Intercepteur de requête pour ajouter le token CSRF
 axiosInstance.interceptors.request.use((config) => {
   const csrfToken = Cookies.get('csrftoken');
-  config.headers['X-CSRFToken'] = csrfToken;
+  if (csrfToken) {
+    config.headers['X-CSRFToken'] = csrfToken;
+  } else {
+    console.error('CSRF token not found');
+  }
   return config;
 });
 
-
 export const login = async (username, password) => {
-
   try {
     const response = await axiosInstance.post(`/login/`, {
       username,
@@ -40,6 +34,7 @@ export const login = async (username, password) => {
     }
   } catch (error) {
     if (error.response) {
+      // Gestion des erreurs de la réponse
     }
     return false;
   }
@@ -67,24 +62,23 @@ export const register = async (username, email, password, firstName, lastName) =
   }
 };
 
-
 export const logout = async () => {
-    try {
-        const response = await axiosInstance.post(`/logout/`);
-        if (response.status === 204) {
-            localStorage.removeItem('isLoggedIn');
-            return true;
-        } else {
-            console.error("Failed to logout:", response.data);
-            return false;
-        }
-    } catch (error) {
-        console.error("An error occurred while logging out", error);
-        if (error.response) {
-            console.error("Server response:", error.response.data);
-        }
-        return false;
+  try {
+    const response = await axiosInstance.post(`/logout/`);
+    if (response.status === 204) {
+      localStorage.removeItem('isLoggedIn');
+      return true;
+    } else {
+      console.error("Failed to logout:", response.data);
+      return false;
     }
+  } catch (error) {
+    console.error("An error occurred while logging out", error);
+    if (error.response) {
+      console.error("Server response:", error.response.data);
+    }
+    return false;
+  }
 };
 
 export const isAuthenticated = async () => {
